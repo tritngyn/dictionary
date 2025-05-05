@@ -2,7 +2,9 @@ import React from "react";
 
 function WordDetail({data, handleSubmit}) {
 
-    if (!data) return null;
+      if (!data || !data.word || !data.meanings || data.meanings.length === 0) {
+        return <div>Không tìm thấy từ này.</div>;
+    }
     console.log("check data", data);
     return (
         <div className="word-details">
