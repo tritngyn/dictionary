@@ -1,6 +1,7 @@
 
 import './App.css';
-import SearchBar from './Component/Header.js';
+import SearchBar from './Component/SearchBar.js';
+import './Component/SearchBar.css';
 
 import {
   BrowserRouter,
