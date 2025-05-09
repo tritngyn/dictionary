@@ -10,6 +10,8 @@ function SearchBar() {
     const [searchHistory, setSearchHistory] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [favWord, setFavWords] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
       // Tải lịch sử tìm kiếm từ localStorage khi khởi động
@@ -60,6 +62,8 @@ const handleInputChange = async (event) => {
 
     const fetchWordDefinition = async (term = searchTerm) =>{
         if (!term) return;
+        setLoading(true);
+        setError(null);
         try{
             let response= await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${term}`);
             let data = response.data; 
@@ -84,8 +88,10 @@ const handleInputChange = async (event) => {
             
           
         } catch (error){
-            setDefinition({ error: 'Không tìm thấy định nghĩa!' });
+            setError('Không thể tìm từ này. Vui lòng thử lại.');
             setSuggestions([]);
+        }finally {
+          setLoading(false);
         }
         
     };
@@ -118,6 +124,7 @@ const handleInputChange = async (event) => {
                 fetchWordDefinition();
                 setSearchTerm(''); } 
                 }>
+                  
                   Tìm kiếm
               </button> 
 
@@ -140,8 +147,13 @@ const handleInputChange = async (event) => {
         </header>
         <main className="parent">
             <div className="definition">
-              <WordDetail data={definition} handleSubmit={handleSubmit} />
+             
+                {loading && <div className="loading">Đang tìm kiếm...</div>}
+                {error && <div className="error">{error}</div>}
+                {!loading && !error && definition &&  <WordDetail data={definition} handleSubmit={handleSubmit} />}
+                {!loading && !error && !definition && <div className="empty-state">Tìm kiếm một từ để bắt đầu</div>}
             </div>
+          
 
             <aside className="aside-right">
               <div className="history-section">
