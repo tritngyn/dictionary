@@ -3,6 +3,9 @@ import axios from "axios";
 import WordDetail from "./WordDetails";
 import History from "./History";
 import Favorate from "./AddFav";
+
+import { TextField, Button, Box, Card, Typography } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 function SearchBar() {
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -45,7 +48,6 @@ const handleInputChange = async (event) => {
         setSuggestions(filteredSuggestions);
           
         }catch(error) {
-      // Nếu không tìm thấy, xóa gợi ý
       setSuggestions([]);
     } 
 }else {
@@ -56,8 +58,7 @@ const handleInputChange = async (event) => {
     const handleSuggestionClick = (suggestion) => {
       setSearchTerm(suggestion);
       fetchWordDefinition(suggestion);
-      setSuggestions('');
-      
+      setSuggestions([]); 
   };
 
     const fetchWordDefinition = async (term = searchTerm) =>{
@@ -92,6 +93,7 @@ const handleInputChange = async (event) => {
             setSuggestions([]);
         }finally {
           setLoading(false);
+          setSuggestions([]);
         }
         
     };
@@ -99,7 +101,6 @@ const handleInputChange = async (event) => {
       const updatedFavHistory = [word, ...favWord.filter(item => item !== word)].slice(0, 10);
       setFavWords(updatedFavHistory);
       localStorage.setItem('searchFavHistory', JSON.stringify(updatedFavHistory));
-
     };
     const DeleteFav = (word) => {
       const newFav = favWord.filter(item => item !== word) ;
@@ -110,54 +111,55 @@ const handleInputChange = async (event) => {
     
     return (
         <>
-        <header>
-          <div className="SearchBar">
-              <input  
+        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+        
+              <TextField 
+                  label="Enter a word"
+                  fullWidth
                   onChange={handleInputChange}
+                  onKeyDown={(e) => e.key === 'Enter' && fetchWordDefinition(searchTerm)}
                   type="text"
                   placeholder="Nhập từ cần tìm..."
                   value={searchTerm}
-                  >
-              </input>
-
-              <button onClick={() => {
+                  />
+              <Button variant="contained" onClick={() => {
                 fetchWordDefinition();
                 setSearchTerm(''); } 
                 }>
                   
                   Tìm kiếm
-              </button> 
-
-              <div className="drop_down">
-              {suggestions.length > 0 && (
-                 <ul>
-                  {suggestions.map((suggestion, index) => (
-                    <li 
-                        key={index}
-                        onClick={() => handleSuggestionClick(suggestion)}
-                    >
-                        {suggestion}
-                    </li>
-                ))}
-                </ul>
-              )}
-              </div>
+              </Button>   
+          </Box> 
+              <List>
+              {suggestions.length > 0 && 
+                 
+                  suggestions.map((suggestion, index) => (
+                    <ListItem key={index} disablePadding> 
+                      <ListItemButton onClick={() =>  handleSuggestionClick(suggestion)}>
+                        <ListItemText primary={suggestion} />
+                      </ListItemButton>
+                  </ListItem>
+                ))
               
-          </div>
-        </header>
-        <main className="parent">
-            <div className="definition">
+              }
+              </List>
+               
+         
+        
+        <Box sx={{ display: 'flex', mt: 4 }}>
+           <Box sx={{ flex: 1, mr: 2 }}>
+            <Card sx={{ p: 2 }}>
              
-                {loading && <div className="loading">Đang tìm kiếm...</div>}
-                {error && <div className="error">{error}</div>}
+                {loading && <Typography className="loading">Đang tìm kiếm...</Typography>}
+                {error && <Typography className="error">{error}</Typography>}
                 {!loading && !error && definition &&  <WordDetail data={definition} handleSubmit={handleSubmit} />}
-                {!loading && !error && !definition && <div className="empty-state">Tìm kiếm một từ để bắt đầu</div>}
-            </div>
-          
+                {!loading && !error && !definition && <Typography className="empty-state">Tìm kiếm một từ để bắt đầu</Typography>}
+            </Card>
+          </Box>
 
-            <aside className="aside-right">
-              <div className="history-section">
-                <h3>HISTORY</h3>
+            <Box sx={{ width: 300 }}>
+              <Card sx={{ mb: 2, p: 2 }}>
+                <Typography variant="h6">History</Typography>
                 <History
                   items={searchHistory}
                   onItemClick={(term) => {
@@ -165,10 +167,10 @@ const handleInputChange = async (event) => {
                     fetchWordDefinition(term);
                   }}
                 />
-              </div>
+              </Card>
 
-              <div className="favorate-section">
-                <h3>FAVORITE</h3>
+              <Card sx={{ p: 2 }}>
+                <Typography variant="h6">FAVORITE</Typography>
                 <Favorate
                   items={favWord}
                   DeleteFav = {DeleteFav}
@@ -176,9 +178,9 @@ const handleInputChange = async (event) => {
                     fetchWordDefinition(term);
                   }}
                 />
-              </div>
-            </aside>
-          </main>
+              </Card>
+            </Box>
+          </Box>
 
         
         </>

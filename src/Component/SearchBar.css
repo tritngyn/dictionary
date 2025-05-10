@@ -1,21 +1,47 @@
-/* Tổng thể layout */
+/* ----------- DEFINE VARIABLES ----------- */
+:root {
+  --bg-main: #fdfdfd;
+  --bg-section: #ffffff;
+  --bg-button: #28a745;
+  --bg-button-hover: #218838;
+  --bg-input: #ffffff;
+  --bg-suggestion: #ffffff;
+  --bg-suggestion-hover: #f1f1f1;
+  --border-color: #ccc;
+  --text-color: #000000;
+}
+
+[data-theme="dark"] {
+  --bg-main: #121212;
+  --bg-section: #1e1e1e;
+  --bg-button: #388e3c;
+  --bg-button-hover: #2e7d32;
+  --bg-input: #1e1e1e;
+  --bg-suggestion: #1e1e1e;
+  --bg-suggestion-hover: #333333;
+  --border-color: #444444;
+  --text-color: #ffffff;
+}
+
+/* ----------- LAYOUT ----------- */
 .parent {
   display: flex;
   justify-content: space-between;
   padding: 20px;
   gap: 20px;
+  background-color: var(--bg-main);
+  color: var(--text-color);
 }
 
-/* Khu vực hiển thị nghĩa từ */
 .definition {
   flex: 3;
-  background-color: #fdfdfd;
+  background-color: var(--bg-main);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  color: var(--text-color);
 }
 
-/* Khu vực chứa lịch sử và yêu thích */
 .aside-right {
   flex: 1;
   display: flex;
@@ -23,71 +49,78 @@
   gap: 30px;
 }
 
-/* Riêng từng section */
 .history-section,
 .favorate-section {
-  background-color: #ffffff;
+  background-color: var(--bg-section);
   padding: 15px;
   border-radius: 6px;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  color: var(--text-color);
 }
 
-.history-section h3,
-.favorate-section h3 {
+.history-section h2,
+.favorate-section h2 {
   margin-bottom: 10px;
   font-size: 16px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 5px;
 }
 
+/* ----------- BUTTONS ----------- */
+.SearchBar button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  background-color: var(--bg-button);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.SearchBar button:hover {
+  background-color: var(--bg-button-hover);
+}
+
+/* ----------- INPUT ----------- */
+.SearchBar input[type="text"] {
+  padding: 8px 12px;
+  width: 300px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-input);
+  color: var(--text-color);
+}
+
+/* ----------- HISTORY + FAVORITE BUTTONS ----------- */
 .history-section button,
 .favorate-section button {
   display: block;
   margin-bottom: 6px;
   width: 100%;
   padding: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background-color: #fafafa;
+  background-color: var(--bg-input);
   cursor: pointer;
   text-align: left;
+  color: var(--text-color);
+  transition: background-color 0.3s;
 }
 
 .history-section button:hover,
 .favorate-section button:hover {
-  background-color: #e6f7ff;
+  background-color: var(--bg-suggestion-hover);
 }
 
-/* Thanh tìm kiếm */
-.SearchBar input[type="text"] {
-  padding: 8px 12px;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.SearchBar button {
-  padding: 8px 16px;
-  margin-left: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.SearchBar button:hover {
-  background-color: #218838;
-}
-
-/* Gợi ý */
+/* ----------- DROPDOWN SUGGESTIONS ----------- */
 .drop_down ul {
   list-style: none;
   padding: 0;
   margin-top: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   max-width: 300px;
-  background-color: #fff;
+  background-color: var(--bg-suggestion);
   position: absolute;
   z-index: 10;
 }
@@ -95,8 +128,9 @@
 .drop_down li {
   padding: 8px 10px;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 .drop_down li:hover {
-  background-color: #f1f1f1;
+  background-color: var(--bg-suggestion-hover);
 }

@@ -1,23 +1,37 @@
 import React from "react";
-
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 const Favorate = ({ items, DeleteFav ,onItemClick }) => {
     if (!items || items.length === 0) return null;
     return (
-        <div className="favorate">
+        <List >
            { items.map((items, index) => (
-            <li key = {index}>
-                <div  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <button onClick={() => onItemClick(items)}>
-                        {items}
-                    </button>
-                    <button onClick={() => DeleteFav(items)}>
-                        X
-                    </button>
-                </div>
+            <ListItem key = {index} 
+             alignItems="center"
+            secondaryAction={
+                <IconButton sx ={{ width : '100px'}}  edge="end" aria-label="delete" onClick={() => DeleteFav(items)}>
+                    <DeleteIcon />
+                </IconButton>
+            }
+            sx={{ borderRadius: 1, mb: 1 }}
+          
+            >
+            <ListItemButton  onClick={() => onItemClick(items)}> 
+                <ListItemText primary ={items}
+                                slotProps={{
+                                    primaryTypography: {
+                                    sx: { color: 'text.primary' }
+                                    }
+                                }}
+                                />
+            </ListItemButton>
+            </ListItem> 
+            ))} 
+          
+        </List>
+           
 
-            </li>
-            ))}
-        </div>
     )
 }
 export default Favorate;

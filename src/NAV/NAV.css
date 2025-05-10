@@ -25,3 +25,11 @@
     background-color: #04AA6D;
     color: white;
   }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--nav-bg, #333);
+    color: var(--nav-text, #fff);
+  }

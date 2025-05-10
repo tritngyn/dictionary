@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Button } from "@mui/material";
 function WordDetail({data, handleSubmit}) {
 
       if (!data || !data.word || !data.meanings || data.meanings.length === 0) {
@@ -10,7 +10,7 @@ function WordDetail({data, handleSubmit}) {
         <div className="word-details">
         <div className="word-header">
           <h2>{data.word}  
-          <button onClick={ () => handleSubmit(data.word)}> + </button> </h2> 
+          <Button  variant="contained" onClick={ () => handleSubmit(data.word)}> + </Button> </h2> 
           {data.phonetic && <span className="phonetic">{data.phonetic}</span>}
         </div>
     
